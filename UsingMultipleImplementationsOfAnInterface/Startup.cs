@@ -28,12 +28,12 @@ namespace UsingMultipleImplementationsOfAnInterface
         public void ConfigureServices(IServiceCollection services)
         {
             //Use an IEnumerable collection of service instances
-            /*services.AddScoped<ICustomLogger, FileLogger>();
+            services.AddScoped<ICustomLogger, FileLogger>();
             services.AddScoped<ICustomLogger, EventLogger>();
-            services.AddScoped<ICustomLogger, DbLogger>();*/
+            services.AddScoped<ICustomLogger, DbLogger>();
 
             //Use a delegate to retrieve a specific service instance         
-            services.AddScoped<FileLogger>();
+            /*services.AddScoped<FileLogger>();
             services.AddScoped<EventLogger>();
             services.AddScoped<DbLogger>();
 
@@ -50,7 +50,7 @@ namespace UsingMultipleImplementationsOfAnInterface
                     default:
                         return null;
                 }
-            });
+            });*/
 
             services.AddControllersWithViews();
         }

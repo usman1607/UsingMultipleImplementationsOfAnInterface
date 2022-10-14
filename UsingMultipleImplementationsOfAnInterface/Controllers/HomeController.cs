@@ -16,32 +16,29 @@ namespace UsingMultipleImplementationsOfAnInterface.Controllers
 
     public class HomeController : Controller
     {
+        private readonly IEnumerable<ICustomLogger> _loggers;
+
         private readonly ICustomLogger _filLlogger;
         private readonly ICustomLogger _dbLogger;
         private readonly ICustomLogger _eventLogger;              
 
         //Use an IEnumerable collection of service instances
-        /*public HomeController(IEnumerable<ICustomLogger> loggers)
+        public HomeController(IEnumerable<ICustomLogger> loggers)
         {
-            int i = 0;
-            var logs = new ICustomLogger[3];
-            foreach(var logger in loggers)
-            {
-                logs[i] = logger;
-                i++;
-            }
-            _filLlogger = logs[0];            
-            _eventLogger = logs[1];
-            _dbLogger = logs[2];
-        }*/
+            _loggers = loggers;   //Then we can use foreach logger in _loggers to call methods in each of the logger service...
+            
+            _filLlogger = _loggers.Where(l => l.GetType() == typeof(FileLogger)).SingleOrDefault();     
+            _eventLogger = _loggers.Where(l => l.GetType() == typeof(EventLogger)).SingleOrDefault();
+            _dbLogger = _loggers.Where(l => l.GetType() == typeof(DbLogger)).SingleOrDefault();
+        }
 
         //Use a delegate to retrieve a specific service instance
-        public HomeController(ServiceResolver serviceResolver)
+        /*public HomeController(ServiceResolver serviceResolver)
         {            
             _filLlogger = serviceResolver(ServiceType.FileLogger);
             _eventLogger = serviceResolver(ServiceType.EventLogger);
             _dbLogger = serviceResolver(ServiceType.DbLogger);
-        }
+        }*/
 
         //Another possible solution is using a generic type parameter on the interface.
 
